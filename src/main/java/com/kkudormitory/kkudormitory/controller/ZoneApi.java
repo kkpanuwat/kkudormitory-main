@@ -34,11 +34,7 @@ public class ZoneApi {
         return dorm.allDormitory();
     }
 
-    @GetMapping("/test")
-    public List<Dormitory> getDorm(){
-        
-        return repo.findAll();
-    }
+
 
 
 

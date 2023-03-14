@@ -30,6 +30,7 @@ public class DormitoryApi {
 			dormData.put("dorm_name", ((Object[]) result)[1]);
 			dormData.put("detail", ((Object[]) result)[2]);
 			dormData.put("month_price", ((Object[]) result)[3]);
+			dormData.put("zone_id", ((Object[]) result)[7]);
 			String imageUrlsStr = (String) ((Object[]) result)[4];
 			if (imageUrlsStr != null) {
 				String[] imageUrls = imageUrlsStr.split(",");
@@ -38,8 +39,12 @@ public class DormitoryApi {
 			items.add(dormData);
 		}
 		String namezone = (String)((Object[]) resultList.get(0))[5];
+		String namezone_thai = (String)((Object[]) resultList.get(0))[6];
+		int idzonn = (int)((Object[]) resultList.get(0))[7];
 		dormitories.put("amount", resultList.size());
 		dormitories.put("name", namezone);
+		dormitories.put("name_zone", namezone_thai);
+		dormitories.put("id_zone", idzonn);
 		dormitories.put("items", items);
 		return dormitories;
 	}

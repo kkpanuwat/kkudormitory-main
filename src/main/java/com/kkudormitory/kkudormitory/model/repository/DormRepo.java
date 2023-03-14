@@ -22,7 +22,7 @@ public interface DormRepo extends JpaRepository<Dormitory, Integer>  {
     //	                 + "FROM dormitory JOIN zone ON (zone.zoneid = dormitory.zoneid) "
     //	                 + "ORDER BY dormitory.dormID ASC",
     //	           nativeQuery = true)
-        @Query(value = "SELECT d.dormID, d.dorm_name, d.address, z.zonename \n"
+        @Query(value = "SELECT d.dormID, d.dorm_name, d.address, z.zonenameeng \n"
                 + "FROM dormitory d \n"
                 + "JOIN zone z ON z.zoneid = d.zoneid \n"
                 + "ORDER BY d.dormID DESC",
@@ -35,6 +35,6 @@ public interface DormRepo extends JpaRepository<Dormitory, Integer>  {
                 nativeQuery = true)
             List<Object> mainScreenFindMueang();
 
-        @Query(value = "SELECT d.dormID, d.dorm_name, d.address, d.month_price , GROUP_CONCAT(i.image_name) AS image_urls, z.zonenameeng FROM dormitory d LEFT JOIN images i ON d.dormID = i.dormID LEFT JOIN zone z ON d.zoneid = z.zoneid WHERE d.zoneid=:zid GROUP BY d.dormID",nativeQuery = true)
+        @Query(value = "SELECT d.dormID, d.dorm_name, d.address, d.month_price , GROUP_CONCAT(i.image_name) AS image_urls, z.zonenameeng , z.zonenamethai, z.zoneid FROM dormitory d LEFT JOIN images i ON d.dormID = i.dormID LEFT JOIN zone z ON d.zoneid = z.zoneid WHERE d.zoneid=:zid GROUP BY d.dormID LIMIT 3",nativeQuery = true)
         List<Object> getMain(@Param("zid") Integer zid);
 }
