@@ -126,7 +126,7 @@ public class DormitoryApi {
 
 				
 	    resultList.add(dormitories);
-	    // resultList.add(Map.of("Kangsadan",dormitoriesKangsadan));
+	    resultList.add(dormitoriesKangsadan);
 		// resultList.add(Map.of("Mueang",dormitoriesMueang));
 		// resultList.add(Map.of("Kholambo",dormitoriesKholambo));
 		// resultList.add(Map.of("NonMuang",dormitoriesNonMuang));
