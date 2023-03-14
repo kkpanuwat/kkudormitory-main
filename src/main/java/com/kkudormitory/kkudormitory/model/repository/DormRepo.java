@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.kkudormitory.kkudormitory.model.bean.Dormitory;
 
@@ -33,4 +34,7 @@ public interface DormRepo extends JpaRepository<Dormitory, Integer>  {
                 + "WHERE zoneid=1",
                 nativeQuery = true)
             List<Object> mainScreenFindMueang();
+
+        @Query(value = "SELECT d.dormID, d.dorm_name, d.address, d.month_price , GROUP_CONCAT(i.image_name) AS image_urls, z.zonenameeng FROM dormitory d LEFT JOIN images i ON d.dormID = i.dormID LEFT JOIN zone z ON d.zoneid = z.zoneid WHERE d.zoneid=:zid GROUP BY d.dormID",nativeQuery = true)
+        List<Object> getMain(@Param("zid") Integer zid);
 }
