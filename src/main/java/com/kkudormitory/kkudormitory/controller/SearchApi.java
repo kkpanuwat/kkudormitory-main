@@ -12,9 +12,9 @@ public class SearchApi {
     @Autowired
 	private SearchRepository repo;
 
-    @GetMapping("/{search}")
-    public List<Object> testT(@RequestParam("search") String search){
+    // @GetMapping("/{search}")
+    // public List<Object> testT(@RequestParam("search") String search){
         
-        return repo.searchDorm(search);
-    }
+    //     return repo.searchDorm(search);
+    // }
 }
