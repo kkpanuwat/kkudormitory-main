@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.kkudormitory.kkudormitory.model.bean.Dormitory;
 import com.kkudormitory.kkudormitory.model.repository.DormRepo;
 
+@CrossOrigin
 @RestController
 @RequestMapping("api/dorm")
 public class DormitoryApi {
@@ -17,14 +18,23 @@ public class DormitoryApi {
 	@Autowired
 	private DormRepo repo;
 
+
 	@GetMapping("/main")
-	public   List<Map<String, Object>> getDrom() throws ClassNotFoundException, SQLException {
-	    List<Map<String, Object>> resultList = new ArrayList<>();
+	public   ArrayList getDrom() throws ClassNotFoundException, SQLException {
+	    ArrayList resultList = new ArrayList<>();
 	    Class.forName("com.mysql.cj.jdbc.Driver");
-	    Connection con = DriverManager.getConnection("jdbc:mysql://dbjavaweb.mysql.database.azure.com:3306/kkudormitory?characterEncoding=utf-8&useSSL=true", "supphitan", "0648801344@O");
+	    Connection con = DriverManager.getConnection("jdbc:mysql://localhost/kkudormitory?characterEncoding=utf-8&useSSL=true", "root", "");
 	    PreparedStatement near = con.prepareStatement("SELECT d.dormID, d.dorm_name, d.detail, d.month_price, GROUP_CONCAT(i.image_name) AS image_urls FROM dormitory d LEFT JOIN images i ON d.dormID = i.dormID WHERE d.zoneid=1 GROUP BY d.dormID LIMIT 4");
 	    ResultSet resultSetNear = near.executeQuery();
-	    List<Map<String, Object>> dormitories = new ArrayList<>();
+
+
+	    Map<String, Object> dormitories = new HashMap<>();
+		// Map<String, Object> items = new HashMap<>();
+		ArrayList<Object> x = new ArrayList();
+		// items.put("items", items)
+
+		dormitories.put("name", "LangMo");
+		// dormitories.add(dormitories);
 	    while (resultSetNear.next()) {
 	        Map<String, Object> dormData = new HashMap<>();
 	        dormData.put("dormID", resultSetNear.getObject("dormID"));
@@ -36,13 +46,16 @@ public class DormitoryApi {
 	            String[] imageUrls = imageUrlsStr.split(",");
 	            dormData.put("image_urls", Arrays.asList(imageUrls)); 
 	        }
-	        dormitories.add(dormData);
+	        x.add(dormData);
 	    }
 	    
+		dormitories.put("items", x);
       //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	    PreparedStatement Kangsadan = con.prepareStatement("SELECT d.dormID, d.dorm_name, d.detail, d.month_price, GROUP_CONCAT(i.image_name) AS image_urls FROM dormitory d LEFT JOIN images i ON d.dormID = i.dormID WHERE d.zoneid=2 GROUP BY d.dormID LIMIT 4");
 	    ResultSet resultSetKangsadan = Kangsadan.executeQuery();
-	    List<Map<String, Object>> dormitoriesKangsadan = new ArrayList<>();
+	    Map<String, Object> dormitoriesKangsadan = new HashMap<>();
+		ArrayList<Object> y = new ArrayList();
+		dormitoriesKangsadan.put("name", "Kangsadan");
 	    while (resultSetKangsadan.next()) {
 	        Map<String, Object> dormData = new HashMap<>();
 	        dormData.put("dormID", resultSetKangsadan.getObject("dormID"));
@@ -54,8 +67,9 @@ public class DormitoryApi {
 	            String[] imageUrls = imageUrlsStr.split(",");
 	            dormData.put("image_urls", Arrays.asList(imageUrls)); 
 	        }
-	        dormitoriesKangsadan.add(dormData);
+	        y.add(dormData);
 	    }
+		dormitoriesKangsadan.put("items", y);
 	      //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		    PreparedStatement Mueang = con.prepareStatement("SELECT d.dormID, d.dorm_name, d.detail, d.month_price, GROUP_CONCAT(i.image_name) AS image_urls FROM dormitory d LEFT JOIN images i ON d.dormID = i.dormID WHERE d.zoneid=5 GROUP BY d.dormID LIMIT 4");
 		    ResultSet resultSetMueang = Mueang.executeQuery();
@@ -109,8 +123,19 @@ public class DormitoryApi {
 			        }
 			        dormitoriesNonMuang.add(dormData);
 			    }
-	    resultList.add(Map.of("LangMo", dormitories,"Kangsadan",dormitoriesKangsadan,"Mueang",dormitoriesMueang,"Kholambo",dormitoriesKholambo,"NonMuang",dormitoriesNonMuang));
-	    con.close();
+
+				
+	    resultList.add(dormitories);
+	    // resultList.add(Map.of("Kangsadan",dormitoriesKangsadan));
+		// resultList.add(Map.of("Mueang",dormitoriesMueang));
+		// resultList.add(Map.of("Kholambo",dormitoriesKholambo));
+		// resultList.add(Map.of("NonMuang",dormitoriesNonMuang));
+
+
+
+	    // resultList.add(Map.of("LangMo", dormitories,"Kangsadan",dormitoriesKangsadan,"Mueang",dormitoriesMueang,"Kholambo",dormitoriesKholambo,"NonMuang",dormitoriesNonMuang));
+
+		con.close();
 	    return resultList;
 	}
 	//	หอที่แนะนำทางขวาหน้าจอที่มาใหม่สุด
